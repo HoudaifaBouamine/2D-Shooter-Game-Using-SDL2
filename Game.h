@@ -17,6 +17,13 @@ class Game {
         int fire;
     };
 
+    struct stHealthBar {
+
+        SDL_Texture* out = NULL;
+        SDL_Texture* in = NULL;
+
+    };
+
     struct stEntity {
 
         int x;
@@ -25,28 +32,34 @@ class Game {
         int dy;
         int w;
         int h;
-        int health;
+        float health;// if health = 0 delete entity
+        int reload;
+
 
         SDL_Texture* texture;
-        
+        stHealthBar health_bar;
+
     };
+
+ 
 
     bool isRunnging = true;
 
     stApp app = {};
 
     stEntity player = {};
+    stEntity pacman = {};
     stEntity new_fire_ball;
     vector <stEntity> vFire;
 
 public:
 
-    void init() {
+    void init_SDL() {
 
         int windowFlags = 0;
         int rendererFlags = SDL_RENDERER_ACCELERATED;
 
-        if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
             printf("Error init SDL : %s\n", SDL_GetError());
             isRunnging = false;
             return;
@@ -78,14 +91,8 @@ public:
 
         IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
 
+        printf("Image Init Successfuly\n");
 
-        // Initielizing player character
-        _init_player();
-        printf("Player Created Successfuly\n");
-
-        // Initilizing fire ball character
-        _init_fire_ball();
-        printf("Fire ball Created Successfuly\n");
 
     }
 
@@ -103,6 +110,8 @@ public:
             {
             case SDL_QUIT: {
 
+                clear(); 
+                printf("Game End");
                 exit(0);
                 break;
             }
@@ -147,28 +156,43 @@ public:
         if (player.y < 0) player.y = 0; 
         else if (player.y > SCREEN_HEIGHT - player.h) player.y = SCREEN_HEIGHT - player.h;
 
+        // Update Player Reload
+        if (player.reload > 0) player.reload--;
 
 
 
 
-
-
-
+        //\\----------------------------------------------------------------//\\
 
 
 
 
         // Creat Fire
-        if (app.fire) {
+        if (app.fire && !player.reload) {
 
             new_fire_ball.y = player.y + player.h/2 - new_fire_ball.h/2;
             new_fire_ball.x = player.x + player.w;
             vFire.push_back(new_fire_ball);
-
-            app.fire = 0;
+            player.reload = PLAYER_RELOAD_TIME;
         }
 
         // Move Fire
+       
+
+
+       
+
+//        Update Enemie
+
+
+        static float counter = 0;
+        counter+= 0.01;
+
+        pacman.y = PACMAN_Y_POS + PACMAN_Y_SPEED * sin(counter);
+        
+
+        // hit enemy
+
         char size = vFire.size();
         for (char i = 0; i < size; i++)
         {
@@ -177,16 +201,33 @@ public:
             if (vFire[i].x > SCREEN_WIDTH) {
                 vFire[i].health = 0;
             }
-        }
 
+            if (pacman.health > 0) {
+                // if (vFire[i].x + vFire[i].w >= pacman.x && vFire[i].x <= pacman.x + pacman.w && !(vFire[i].y <= pacman.y + pacman.h && vFire[i].y + vFire[i].h <= pacman.y))
+                if (vFire[i].y >= pacman.y && vFire[i].y <= pacman.y + pacman.h && vFire[i].x + vFire[i].w >= pacman.x + pacman.w / 2 && vFire[i].x <= pacman.x + pacman.w)
+                {
+                    if (pacman.health > 0) {
+                        vFire[i].health = 0;
+                        pacman.health -= 100;
+                    }
+                }
+            }
+        }
 
     }
 
+
     void render() {
 
+        // Show player health
+        _draw(player.health_bar.in, 52, 27, 163 * (player.health / PLAYER_MAX_HEALTH), 20);
+        _draw(player.health_bar.out, 20, 20, 200, 35);
+
+        
         // Drawing player
-        if(player.health)
+        if (player.health > 0) {
             _draw(player.texture, player.x, player.y, player.w, player.h);
+        }
 
         for (size_t i = 0; i < vFire.size(); i++)
         {
@@ -199,6 +240,17 @@ public:
             }
         }
 
+        // Drawing pacman
+
+        if (pacman.health > 0) {
+            _draw(pacman.texture, pacman.x, pacman.y, pacman.w, pacman.h);
+
+            _draw(pacman.health_bar.in, pacman.x + 16, pacman.y - 15, 165 * 0.5 * (pacman.health / PACMAN_MAX_HEALTH), 10);// pacman.x, pacman.y - 20, pacman.w, 20);
+            _draw(pacman.health_bar.out, pacman.x,pacman.y - 18, 200 * 0.5, 17);// pacman.x, pacman.y - 20, pacman.w, 20);
+
+        }
+
+
         // Apply changes to the screen
         SDL_RenderPresent(app.renderer);
 
@@ -210,6 +262,53 @@ public:
     void clear() {
 
 
+    }
+
+    static void capFrameRate(ll* then, float* remainder)
+    {
+        long wait, frameTime;
+
+        wait = 16 + *remainder;
+
+        *remainder -= (int)*remainder;
+
+        frameTime = SDL_GetTicks() - *then;
+
+        wait -= frameTime;
+
+        if (wait < 1)
+        {
+            wait = 1;
+        }
+
+        SDL_Delay(wait);
+
+        *remainder += 0.667;
+
+        *then = SDL_GetTicks();
+    }
+
+    ll start_time;
+
+    void GameInfo() {
+
+        static int cpt = 5;
+        if (!cpt--) {
+            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 0,10 });
+            printf("FPS : %d  \n", 1000 / (SDL_GetTicks64() - start_time));
+            printf("Player HP : %d  \n", player.health);
+            printf("Pacman HP : %d  \n", pacman.health);
+
+            cpt = 5;
+        }
+
+        start_time = SDL_GetTicks64();
+    }
+
+    Game() {
+        start_time = SDL_GetTicks64();
+        init_SDL();
+        _init_game();
     }
 
 private:
@@ -310,18 +409,23 @@ private:
 
     void _handle_mouse_button_up(SDL_MouseButtonEvent* btnMouse) {
 
+        if (btnMouse->button == SDL_BUTTON_LEFT) {
+
+            app.fire = 0;
+
+        }
     }
 
     void _init_fire_ball() {
 
         new_fire_ball.x = player.x + player.w;
         new_fire_ball.y = player.y + player.h / 2;
-        new_fire_ball.w = 10;
+        new_fire_ball.w = 30;
         new_fire_ball.h = 10;
         new_fire_ball.dx = 16;
         new_fire_ball.dy = 0;
         new_fire_ball.health = 1;
-        new_fire_ball.texture = _loadTexture((char*)"pics/fireball.png");
+        new_fire_ball.texture = _loadTexture((char*)"pics/pacman.png");
     }
 
     void _init_player() {
@@ -331,11 +435,48 @@ private:
         player.y = 100;
         player.w = 80;
         player.h = 81;
-        player.dx = 4;
-        player.dy = 4;
-        player.health = 100;
+        player.dx = 5;
+        player.dy = 5;
+        player.health = PLAYER_MAX_HEALTH;
+        player.reload = 0;
         player.texture = _loadTexture((char*)"pics/ship.png");
+        player.health_bar.out = _loadTexture(((char*)"pics/emptyhealthbar.png"));
+        player.health_bar.in = _loadTexture(((char*)"pics/healthbar.png"));
 
     }
 
+    void _init_pacman() {
+
+
+        pacman.x = 1000;
+        pacman.y = PACMAN_Y_POS;
+        pacman.w = 120;
+        pacman.h = 121;
+        pacman.dx = 0;
+        pacman.dy = PACMAN_Y_SPEED;
+        pacman.health = PACMAN_MAX_HEALTH;
+        pacman.reload = 0;
+        pacman.texture = _loadTexture((char*)"pics/pacman.png");
+        pacman.health_bar.out = _loadTexture(((char*)"pics/emptyhealthbar.png"));
+        pacman.health_bar.in = _loadTexture(((char*)"pics/healthbar.png"));
+
+    }
+
+    void _init_game() {
+
+        // Initielizing player character
+        _init_player();
+        printf("Player Created Successfuly\n");
+
+        // Initilizing fire ball character
+        _init_fire_ball();
+        printf("Fire ball Created Successfuly\n");
+
+        _init_pacman();
+        printf("pacman Created Successfuly\n");
+
+
+        
+
+    }
 };
