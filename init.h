@@ -3,6 +3,7 @@
 #include "defs.h"
 #include "Global.h"
 #include "draw.h"
+#include "logic.h"
 
 void initPlayer();
 void initSDL();
@@ -33,6 +34,12 @@ void initGame() {
 	SDL_SetRenderDrawColor(app.renderer, 96, 128, 255, 255);
 	initPlayer();
 	initBullet();
+
+	stage.bullet_head.next = stage.bullet_tail;
+	stage.bullet_tail = NULL;
+
+	app.delegate.logic = game_logic;
+	app.delegate.draw = game_draw;
 
 }
 
@@ -75,24 +82,26 @@ void initPlayer() {
 
 	player.x = PLAYER_POS_X;
 	player.y = PLAYER_POS_Y;
-	player.w = PLAYER_WIDTH;
-	player.h = PLAYER_HEIGHT;
 	player.dx = PLAYER_SPEED_dX;
 	player.dy = PLAYER_SPEED_dY;
 	player.health = PLAYER_HEALTH;
 	player.texture = loadTexture((char*)"pics/player.png");
+
+	SDL_QueryTexture(player.texture, NULL, NULL, &player.w, &player.h);
 
 }
 
 void initBullet() {
 
 	
-	bullet.w = PLAYER_BULLET_WIDTH;
-	bullet.h = PLAYER_BULLET_HEIGHT;
-	bullet.dx = PLAYER_BULLET_SPEED_dX;
-	bullet.dy = PLAYER_BULLET_SPEED_dY;
-	bullet.health = 0;
-	bullet.texture = loadTexture((char*)"pics/player_bullet.png");
+	player_bullet.dx = PLAYER_BULLET_SPEED_dX;
+	player_bullet.dy = PLAYER_BULLET_SPEED_dY;
+	player_bullet.health = 1;
+	player_bullet.texture = loadTexture((char*)"pics/player_bullet.png");
+	player_bullet.next = NULL;
+
+	SDL_QueryTexture(player_bullet.texture, NULL, NULL, &player_bullet.w, &player_bullet.h);
+
 }
 
 void initSDL() {

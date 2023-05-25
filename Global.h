@@ -5,4 +5,6 @@
 stApp app = {};
 
 stEntity player = {};
-stEntity bullet = {};
+stEntity player_bullet = {};
+
+stStage stage = {};

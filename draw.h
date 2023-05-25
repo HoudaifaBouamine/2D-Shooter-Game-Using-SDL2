@@ -1,6 +1,70 @@
 #pragma once
 #include "Game.h"
 
+void draw(SDL_Texture* texture, int x, int y, int w, int h);
+void draw(stEntity entity);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void game_draw() {
+
+	if(player.health)
+		draw(player);
+	
+	for (stEntity* ptrBullet = stage.bullet_head.next; ptrBullet != NULL; ptrBullet = ptrBullet->next)
+	{
+		if (ptrBullet->health)
+			draw(*ptrBullet);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 SDL_Texture* loadTexture(char* filename)
 {
 
@@ -40,4 +104,5 @@ void draw(stEntity entity)
 	dest.h = entity.h;
 
 	SDL_RenderCopy(app.renderer, entity.texture, NULL, &dest);
+	
 }

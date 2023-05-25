@@ -27,15 +27,11 @@ void game_loop() {
 
 		doInput();
 
-		move_player();
+
+		app.delegate.logic();
+		app.delegate.draw();
 
 
-
-		move_bullet();
-
-		if (player.health) draw(player);
-
-		if (bullet.health) draw(bullet);
 
 		SDL_RenderPresent(app.renderer);
 
@@ -100,8 +96,8 @@ void move_player()
 void move_bullet()
 {
 
-	bullet.y += bullet.dy;
-	bullet.x += bullet.dx;
+	player_bullet.y += player_bullet.dy;
+	player_bullet.x += player_bullet.dx;
 
 	
 }
@@ -118,12 +114,19 @@ void show_game_info()
 	clear_screen();
 
 	printf("Player Info : \n");
-	printf("x  : %d      \n", player.x);
-	printf("y  : %d      \n", player.y);
+	printf("x  : %f      \n", player.x);
+	printf("y  : %f      \n", player.y);
 	printf("w  : %d      \n", player.w);
 	printf("h  : %d      \n", player.h);
-	printf("dx : %d      \n", player.dx);
-	printf("dy : %d      \n", player.dy);
+	printf("dx : %f      \n", player.dx);
+	printf("dy : %f      \n", player.dy);
 
 	printf("\n\n");
+	int cpt = 0;
+	for (stEntity* ptr = stage.bullet_head.next; ptr != NULL ; ptr = ptr->next)
+	{
+		cpt++;
+	}
+
+	printf("Bullets counter : %d    \n", cpt);
 }

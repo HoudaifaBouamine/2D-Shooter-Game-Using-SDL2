@@ -7,8 +7,6 @@ struct stDelegate {
 
 };
 
-
-
 struct stApp {
 
 	SDL_Renderer* renderer;
@@ -23,8 +21,8 @@ struct stEntity {
 
 	float x;
 	float y;
-	short w;
-	short h;
+	int w;
+	int h;
 
 	float dx;
 	float dy;
@@ -38,10 +36,10 @@ struct stEntity {
 
 };
 
-struct stage {
+struct stStage {
 
 
-	stEntity* bullet_head;
+	stEntity bullet_head;
 	stEntity* bullet_tail;
 };
 
