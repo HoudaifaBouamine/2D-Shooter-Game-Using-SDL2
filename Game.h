@@ -29,21 +29,6 @@ void game_loop() {
 
 		move_player();
 
-		if (bullet.health)
-		{
-			bullet.x += bullet.dx;
-			bullet.y += bullet.dy;
-
-			if (bullet.x > SCREEN_WIDTH) {
-				bullet.health = 0;
-			}
-		}
-		if (app.fire && !bullet.health) {
-
-			bullet.health = 1;
-			bullet.x = player.x + player.w;
-			bullet.y = player.y + player.h / 2 - bullet.h / 2;
-		}
 
 
 		move_bullet();
@@ -101,8 +86,8 @@ void game_loop() {
 void move_player()
 {
 
-	player.y += player.dy * (app.down - app.up);
-	player.x += player.dx * (app.right - app.left);
+	player.y += player.dy * (app.keyboard[SDL_SCANCODE_DOWN] - app.keyboard[SDL_SCANCODE_UP]);
+	player.x += player.dx * (app.keyboard[SDL_SCANCODE_RIGHT] - app.keyboard[SDL_SCANCODE_LEFT]);
 
 	if (player.y + player.h > SCREEN_HEIGHT) player.y = SCREEN_HEIGHT - player.h;
 	else if (player.y < 0) player.y = 0;

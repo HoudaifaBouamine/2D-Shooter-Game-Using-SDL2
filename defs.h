@@ -23,3 +23,6 @@
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
+// Input
+#define MAX_KEYBOARD_KEYS 350
+
