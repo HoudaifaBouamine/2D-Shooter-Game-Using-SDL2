@@ -11,11 +11,23 @@ void do_player(void);
 
 
 
+
+
+
+
+
+
+
+
 void game_logic(void) {
 
-	do_player_bullet();
 
 	do_player();
+	do_player_bullet();
+
+
+
+
 }
 
 
@@ -23,6 +35,14 @@ void game_logic(void) {
 
 
 
+
+
+
+
+
+
+
+ 
 
 
 
@@ -45,27 +65,34 @@ void do_player(void) {
 
 	if (app.keyboard[SDL_SCANCODE_LCTRL] && !player.reload) {
 
-		if (!stage.bullet_head.next) {
-
-			stage.bullet_head.next = new stEntity;
-			stage.bullet_tail = stage.bullet_head.next;
-
-
-		}
-		else {
-
-			stage.bullet_tail->next = new stEntity;
-			stage.bullet_tail = stage.bullet_tail->next;
-
-		}
-
-		*stage.bullet_tail = player_bullet;
-		stage.bullet_tail->y = player.y + player.h / 2 - player_bullet.h / 2;
-		stage.bullet_tail->x = player.x + player.w;
-		
-
-		player.reload = 8;
+		fire_bullet();
 	}
+}
+
+void fire_bullet() {
+
+	// Called only when player reload == 0
+
+	if (!stage.bullet_head.next) {
+
+		stage.bullet_head.next = new stEntity;
+		stage.bullet_tail = stage.bullet_head.next;
+
+
+	}
+	else {
+
+		stage.bullet_tail->next = new stEntity;
+		stage.bullet_tail = stage.bullet_tail->next;
+
+	}
+
+	*stage.bullet_tail = player_bullet;
+	stage.bullet_tail->y = player.y + player.h / 2 - player_bullet.h / 2;
+	stage.bullet_tail->x = player.x + player.w;
+
+
+	player.reload = 8;
 }
 
 void do_player_bullet(void) {

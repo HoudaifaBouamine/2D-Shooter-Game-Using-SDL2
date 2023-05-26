@@ -27,11 +27,8 @@ void game_loop() {
 
 		doInput();
 
-
 		app.delegate.logic();
 		app.delegate.draw();
-
-
 
 		SDL_RenderPresent(app.renderer);
 
