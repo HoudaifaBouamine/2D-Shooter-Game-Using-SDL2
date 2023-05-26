@@ -41,5 +41,8 @@ struct stStage {
 
 	stEntity bullet_head;
 	stEntity* bullet_tail;
+
+	stEntity enemies_head;
+	stEntity* enemies_tail;
 };
 

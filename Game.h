@@ -103,7 +103,7 @@ void show_game_info()
 
 	printf("\n\n");
 	int cpt = 0;
-	for (stEntity* ptr = stage.bullet_head.next; ptr != NULL ; ptr = ptr->next)
+	for (stEntity* ptr = stage.bullet_head.next; ptr != NULL; ptr = ptr->next)
 	{
 		cpt++;
 	}
@@ -118,7 +118,7 @@ void show_game_info()
 
 	if (!counter) {
 
-		printf("FPS : %d              \n",fps);
+		printf("FPS : %d              \n", fps);
 		printf("PT  : %.2f             \n", float(prossesTime.time) / 1000);
 		counter = 10;
 	}
@@ -137,7 +137,7 @@ void cap_fps() {
 		wait = 0;
 	SDL_Delay(wait);
 
-	then = SDL_GetTicks() ;
+	then = SDL_GetTicks();
 
 }
 
