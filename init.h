@@ -33,10 +33,11 @@ void initGame() {
 
 	SDL_SetRenderDrawColor(app.renderer, 96, 128, 255, 255);
 	initPlayer();
-	initBullet();
-
+	
 	stage.bullet_head.next = stage.bullet_tail;
 	stage.bullet_tail = NULL;
+
+	player_bullet_textuer = loadTexture((char*)"pics/player_bullet.png");
 
 	app.delegate.logic = game_logic;
 	app.delegate.draw = game_draw;
@@ -88,19 +89,6 @@ void initPlayer() {
 	player.texture = loadTexture((char*)"pics/player.png");
 
 	SDL_QueryTexture(player.texture, NULL, NULL, &player.w, &player.h);
-
-}
-
-void initBullet() {
-
-	
-	player_bullet.dx = PLAYER_BULLET_SPEED_dX;
-	player_bullet.dy = PLAYER_BULLET_SPEED_dY;
-	player_bullet.health = 1;
-	player_bullet.texture = loadTexture((char*)"pics/player_bullet.png");
-	player_bullet.next = NULL;
-
-	SDL_QueryTexture(player_bullet.texture, NULL, NULL, &player_bullet.w, &player_bullet.h);
 
 }
 

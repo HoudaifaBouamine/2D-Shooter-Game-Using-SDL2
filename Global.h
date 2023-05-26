@@ -5,6 +5,5 @@
 stApp app = {};
 
 stEntity player = {};
-stEntity player_bullet = {};
-
+SDL_Texture* player_bullet_textuer;
 stStage stage = {};

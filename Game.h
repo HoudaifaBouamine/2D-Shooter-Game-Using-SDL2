@@ -1,11 +1,8 @@
 #pragma once
 #include "included_lib.h"
 
-void move_player();
 void clear_screen();
 void show_game_info();
-void move_bullet();
-
 
 
 
@@ -19,7 +16,6 @@ void game_loop() {
 
 	initSDL();
 	initGame();
-
 
 	while (true) {
 
@@ -35,6 +31,7 @@ void game_loop() {
 		show_game_info();
 
 		SDL_Delay(16);
+
 	}
 
 
@@ -76,28 +73,6 @@ void game_loop() {
 
 
 
-void move_player()
-{
-
-	player.y += player.dy * (app.keyboard[SDL_SCANCODE_DOWN] - app.keyboard[SDL_SCANCODE_UP]);
-	player.x += player.dx * (app.keyboard[SDL_SCANCODE_RIGHT] - app.keyboard[SDL_SCANCODE_LEFT]);
-
-	if (player.y + player.h > SCREEN_HEIGHT) player.y = SCREEN_HEIGHT - player.h;
-	else if (player.y < 0) player.y = 0;
-
-	if (player.x + player.w > SCREEN_WIDTH) player.x = SCREEN_WIDTH - player.w;
-	else if (player.x < 0) player.x = 0;
-
-}
-
-void move_bullet()
-{
-
-	player_bullet.y += player_bullet.dy;
-	player_bullet.x += player_bullet.dx;
-
-	
-}
 
 void clear_screen()
 
@@ -126,4 +101,10 @@ void show_game_info()
 	}
 
 	printf("Bullets counter : %d    \n", cpt);
+
+	
+	static	FPS fps;
+
+	fps.calc();
+
 }

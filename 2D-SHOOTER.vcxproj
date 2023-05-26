@@ -138,6 +138,7 @@
   <ItemGroup>
     <ClInclude Include="defs.h" />
     <ClInclude Include="draw.h" />
+    <ClInclude Include="FPS.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="included_lib.h" />

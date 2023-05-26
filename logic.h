@@ -3,7 +3,7 @@
 
 void do_player_bullet(void);
 void do_player(void);
-
+void fire_bullet(void);
 
 
 
@@ -48,18 +48,18 @@ void game_logic(void) {
 
 void do_player(void) {
 
-	player.dx = PLAYER_SPEED_dX * (app.keyboard[SDL_SCANCODE_RIGHT] - app.keyboard[SDL_SCANCODE_LEFT]);
-	player.dy = PLAYER_SPEED_dY * (app.keyboard[SDL_SCANCODE_DOWN] - app.keyboard[SDL_SCANCODE_UP]);
+	player.dx = (float) PLAYER_SPEED_dX * (app.keyboard[SDL_SCANCODE_RIGHT] - app.keyboard[SDL_SCANCODE_LEFT]);
+	player.dy = (float) PLAYER_SPEED_dY * (app.keyboard[SDL_SCANCODE_DOWN] - app.keyboard[SDL_SCANCODE_UP]);
 
 	player.y += player.dy;
 	player.x += player.dx;
 
 
 	if (player.x < 0) player.x = 0;
-	else if (player.x + player.w > SCREEN_WIDTH) player.x = SCREEN_WIDTH - player.w;
+	else if (player.x + player.w > SCREEN_WIDTH) player.x =  (float)SCREEN_WIDTH - player.w;
 
 	if (player.y < 0) player.y = 0;
-	else if (player.y + player.h > SCREEN_HEIGHT) player.y = SCREEN_HEIGHT - player.h;
+	else if (player.y + player.h > SCREEN_HEIGHT) player.y =(float) SCREEN_HEIGHT - player.h;
 	
 	if (player.reload > 0) player.reload--;
 
@@ -69,7 +69,7 @@ void do_player(void) {
 	}
 }
 
-void fire_bullet() {
+void fire_bullet(void) {
 
 	// Called only when player reload == 0
 
@@ -87,10 +87,17 @@ void fire_bullet() {
 
 	}
 
-	*stage.bullet_tail = player_bullet;
-	stage.bullet_tail->y = player.y + player.h / 2 - player_bullet.h / 2;
-	stage.bullet_tail->x = player.x + player.w;
 
+	stage.bullet_tail->dx = PLAYER_BULLET_SPEED_dX;
+	stage.bullet_tail->dy = PLAYER_BULLET_SPEED_dY;
+	stage.bullet_tail->health = 1;
+	stage.bullet_tail->texture = player_bullet_textuer;
+	stage.bullet_tail->next = NULL;
+
+	SDL_QueryTexture(stage.bullet_tail->texture, NULL, NULL, &stage.bullet_tail->w, &stage.bullet_tail->h);
+
+	stage.bullet_tail->y = player.y + player.h / 2 - stage.bullet_tail->h / 2;
+	stage.bullet_tail->x = player.x + player.w;
 
 	player.reload = 8;
 }

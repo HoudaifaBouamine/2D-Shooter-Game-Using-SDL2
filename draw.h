@@ -80,28 +80,20 @@ void draw(SDL_Texture* texture, int x, int y,int w,int h)
 
 	dest.x = x;
 	dest.y = y;
-	//dest.w = w;
-	//dest.h = h;
-	SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
-
-	int fraction = (dest.w / w > dest.h/h)? dest.w / w: dest.h/ h;
-	dest.w /= fraction;
-	dest.h /= fraction;
+	dest.w = w;
+	dest.h = h;
 
 	SDL_RenderCopy(app.renderer, texture, NULL, &dest);
-
-	w = dest.w;
-	h = dest.h;
 }
 
 void draw(stEntity entity)
 {
 	SDL_Rect dest;
 
-	dest.x = entity.x;
-	dest.y = entity.y;
-	dest.w = entity.w;
-	dest.h = entity.h;
+	dest.x = (int)entity.x;
+	dest.y = (int)entity.y;
+	dest.w = (int)entity.w;
+	dest.h = (int)entity.h;
 
 	SDL_RenderCopy(app.renderer, entity.texture, NULL, &dest);
 	
