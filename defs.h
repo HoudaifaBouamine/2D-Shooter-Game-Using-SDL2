@@ -5,8 +5,8 @@
 #define PLAYER_POS_X 100
 #define PLAYER_POS_Y 100
 
-#define PLAYER_SPEED_dX 4.0
-#define PLAYER_SPEED_dY 4.0
+#define PLAYER_SPEED_dX 6.0
+#define PLAYER_SPEED_dY 6.0
 #define PLAYER_HEALTH 100
 
 // Player Bullet Def

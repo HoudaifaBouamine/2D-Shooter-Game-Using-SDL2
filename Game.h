@@ -3,11 +3,13 @@
 
 void clear_screen();
 void show_game_info();
+void cap_fps();
+void 		capFrameRate();
 
 
 
 
-
+Benchmark prossesTime;
 
 
 
@@ -19,6 +21,8 @@ void game_loop() {
 
 	while (true) {
 
+		prossesTime.start();
+
 		SDL_RenderClear(app.renderer);
 
 		doInput();
@@ -28,10 +32,14 @@ void game_loop() {
 
 		SDL_RenderPresent(app.renderer);
 
+		prossesTime.end();
+
 		show_game_info();
 
-		SDL_Delay(16);
 
+
+		cap_fps();
+		//capFrameRate();
 	}
 
 
@@ -102,9 +110,61 @@ void show_game_info()
 
 	printf("Bullets counter : %d    \n", cpt);
 
-	
-	static	FPS fps;
 
-	fps.calc();
+	static int counter = 10;
+	counter--;
 
+	int fps = prossesTime.FPS;
+
+	if (!counter) {
+
+		printf("FPS : %d              \n",fps);
+		printf("PT  : %.2f             \n", float(prossesTime.time) / 1000);
+		counter = 10;
+	}
+
+}
+
+
+void cap_fps() {
+
+	static float then = SDL_GetTicks();
+
+	float def = SDL_GetTicks() - then;
+
+	float wait = (float)1000 / 60 - def;
+	if (wait < 0)
+		wait = 0;
+	SDL_Delay(wait);
+
+	then = SDL_GetTicks() ;
+
+}
+
+static void capFrameRate()
+{
+
+	static long then;
+	static float remainder = 0;
+
+	long wait, frameTime;
+
+	wait = 16 + remainder;
+
+	remainder -= (int)remainder;
+
+	frameTime = SDL_GetTicks() - then;
+
+	wait -= frameTime;
+
+	if (wait < 1)
+	{
+		wait = 1;
+	}
+
+	SDL_Delay(wait);
+
+	remainder += 0.667;
+
+	then = SDL_GetTicks();
 }
