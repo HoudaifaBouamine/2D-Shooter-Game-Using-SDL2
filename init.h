@@ -9,7 +9,7 @@ void initPlayer();
 void initSDL();
 void initGame();
 void initBullet();
-
+void initEnemie();
 
 
 
@@ -33,7 +33,9 @@ void initGame() {
 
 	SDL_SetRenderDrawColor(app.renderer, 96, 128, 255, 255);
 	initPlayer();
-	
+	initEnemie();
+
+
 	stage.bullet_head.next = stage.bullet_tail;
 	stage.bullet_tail = NULL;
 
@@ -122,5 +124,19 @@ void initSDL() {
 	}
 
 	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
+}
+
+void initEnemie() {
+
+
+	stage.enemies_head.next = NULL;
+
+	enemie.dx = ENEMIE_SPEED_dX;
+	enemie.dy = ENEMIE_SPEED_dY;
+	enemie.health = ENEMIE_HEALTH;
+	enemie.texture = loadTexture((char*)"pics/enemie.png");
+	enemie.next = NULL;
+	SDL_QueryTexture(enemie.texture, NULL, NULL, &enemie.w, &enemie.h);
+
 }
 

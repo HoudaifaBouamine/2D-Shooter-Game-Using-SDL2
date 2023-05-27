@@ -38,6 +38,12 @@ void game_draw() {
 		if (ptrBullet->health)
 			draw(*ptrBullet);
 	}
+
+	for (stEntity* ptrEnemie = stage.enemies_head.next; ptrEnemie != NULL; ptrEnemie = ptrEnemie->next)
+	{
+		if (ptrEnemie->health)
+			draw(*ptrEnemie);
+	}
 }
 
 

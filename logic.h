@@ -4,8 +4,8 @@
 void do_player_bullet(void);
 void do_player(void);
 void fire_bullet(void);
-
-
+void do_enemie(void);
+void create_enemie(void);
 
 
 
@@ -26,7 +26,12 @@ void game_logic(void) {
 	do_player_bullet();
 
 
+	if (rand() % 180 == 0) {
 
+		create_enemie();
+	}
+
+	do_enemie();
 
 }
 
@@ -126,5 +131,52 @@ void do_player_bullet(void) {
 		}
 	
 	}
+
+}
+
+void do_enemie() {
+
+	stEntity* tmp;
+
+	for (stEntity* ptrEnemie = &stage.enemies_head; ptrEnemie->next != NULL; )
+	{
+
+		ptrEnemie->next->x += ptrEnemie->next->dx;
+		ptrEnemie->next->y += ptrEnemie->next->dy;
+
+		if (ptrEnemie->next->x < 0 - ptrEnemie->next->w || !ptrEnemie->next->health) {
+
+			tmp = ptrEnemie->next;
+			ptrEnemie->next = ptrEnemie->next->next;
+			delete tmp;
+		}
+		else {
+			ptrEnemie = ptrEnemie->next;
+		}
+
+		
+	}
+
+}
+
+void create_enemie(void) {
+
+	if (stage.enemies_head.next == NULL) {
+
+		stage.enemies_head.next = new stEntity;
+		stage.enemies_tail = stage.enemies_head.next;
+
+	}
+	else {
+
+		stage.enemies_tail->next = new stEntity;
+		stage.enemies_tail = stage.enemies_tail->next;
+
+	}
+
+	*stage.enemies_tail = enemie;
+
+	stage.enemies_tail->x = ENEMIE_POS_X;
+	stage.enemies_tail->y = ENEMIE_POS_Y;
 
 }
