@@ -3,7 +3,7 @@
 
 void clear_screen();
 void show_game_info();
-void cap_fps();
+void cap_fps(int);
 void 		capFrameRate();
 
 
@@ -38,7 +38,7 @@ void game_loop() {
 
 
 
-		cap_fps();
+		cap_fps(60);
 		//capFrameRate();
 	}
 
@@ -126,13 +126,13 @@ void show_game_info()
 }
 
 
-void cap_fps() {
+void cap_fps(int cap = 60) {
 
 	static float then = SDL_GetTicks();
 
 	float def = SDL_GetTicks() - then;
 
-	float wait = (float)1000 / 60 - def;
+	float wait = (float)1000 / cap - def;
 	if (wait < 0)
 		wait = 0;
 	SDL_Delay(wait);
