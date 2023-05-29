@@ -31,10 +31,20 @@ void initStage();
 
 void initGame() {
 
-	SDL_SetRenderDrawColor(app.renderer, 96, 128, 255, 255);
+	
+	app.delegate.logic = game_logic;
+	app.delegate.draw = game_draw;
+
+	stage.bullet_head.next = stage.bullet_tail;
+	stage.bullet_tail = NULL;
+
+	player_bullet_textuer = loadTexture((char*)"pics/player_bullet.png");
+
+
 	initPlayer();
 	initEnemie();
-	initStage();
+
+	SDL_SetRenderDrawColor(app.renderer, 96, 128, 255, 255);
 
 }
 
@@ -132,15 +142,3 @@ void initEnemie() {
 
 }
 
-void initStage() {
-
-	app.delegate.logic = game_logic;
-	app.delegate.draw = game_draw;
-
-	stage.bullet_head.next = stage.bullet_tail;
-	stage.bullet_tail = NULL;
-
-	player_bullet_textuer = loadTexture((char*)"pics/player_bullet.png");
-
-
-}
