@@ -6,7 +6,7 @@ void do_player(void);
 void fire_bullet(void);
 void do_enemies(void);
 void spawn_enemies(void);
-
+void testBulletHitEnemy(stEntity* ptrBullet);
 
 
 
@@ -99,6 +99,7 @@ void fire_bullet(void) {
 	stage.bullet_tail->health = 1;
 	stage.bullet_tail->texture = player_bullet_textuer;
 	stage.bullet_tail->next = NULL;
+	stage.bullet_tail->side = SIDE_PLAYER;
 
 	SDL_QueryTexture(stage.bullet_tail->texture, NULL, NULL, &stage.bullet_tail->w, &stage.bullet_tail->h);
 
@@ -117,8 +118,10 @@ void do_player_bullet(void) {
 
 		ptrBullet->next->x += ptrBullet->next->dx;
 		//		ptrBullet->y += ptrBullet->dy;
+		
+		testBulletHitEnemy(ptrBullet->next);
 
-		if (ptrBullet->next->x > SCREEN_WIDTH) {
+		if (ptrBullet->next->x > SCREEN_WIDTH || !ptrBullet->next->health) {
 
 			tmp = ptrBullet->next;
 			ptrBullet->next = ptrBullet->next->next;
@@ -133,6 +136,18 @@ void do_player_bullet(void) {
 	
 	}
 
+}
+
+void testBulletHitEnemy(stEntity* ptrBullet) {
+
+	for (stEntity* ptrEnemy = stage.enemies_head.next; ptrEnemy != NULL; ptrEnemy = ptrEnemy->next) {
+		if (ptrBullet->side != ptrEnemy->side && ARE_OVERLAPED(ptrBullet->x, ptrBullet->y, ptrBullet->w, ptrBullet->h, ptrEnemy->x, ptrEnemy->y, ptrEnemy->w, ptrEnemy->h))
+		{
+			ptrBullet->health = 0;
+			ptrEnemy->health = 0;
+			return;
+		}
+	}
 }
 
 void do_enemies() {

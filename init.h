@@ -91,7 +91,7 @@ void initPlayer() {
 	player.dy = PLAYER_SPEED_dY;
 	player.health = PLAYER_HEALTH;
 	player.texture = loadTexture((char*)"pics/player.png");
-
+	player.side = SIDE_PLAYER;
 	SDL_QueryTexture(player.texture, NULL, NULL, &player.w, &player.h);
 
 }
@@ -138,6 +138,7 @@ void initEnemie() {
 	enemie.health = ENEMIE_HEALTH;
 	enemie.texture = loadTexture((char*)"pics/enemie.png");
 	enemie.next = NULL;
+	enemie.side = SIDE_ENEMY;
 	SDL_QueryTexture(enemie.texture, NULL, NULL, &enemie.w, &enemie.h);
 
 }
