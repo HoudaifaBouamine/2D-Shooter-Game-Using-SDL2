@@ -4,8 +4,8 @@
 void do_player_bullet(void);
 void do_player(void);
 void fire_bullet(void);
-void do_enemie(void);
-void create_enemie(void);
+void do_enemies(void);
+void spawn_enemies(void);
 
 
 
@@ -26,12 +26,13 @@ void game_logic(void) {
 	do_player_bullet();
 
 
-	if (rand() % 180 == 0) {
+	if (--enemySpownTimer <= 0) {
 
-		create_enemie();
+		spawn_enemies();
+		enemySpownTimer = 30 + (rand() % 60);
 	}
 
-	do_enemie();
+	do_enemies();
 
 }
 
@@ -134,7 +135,7 @@ void do_player_bullet(void) {
 
 }
 
-void do_enemie() {
+void do_enemies() {
 
 	stEntity* tmp;
 
@@ -159,7 +160,7 @@ void do_enemie() {
 
 }
 
-void create_enemie(void) {
+void spawn_enemies(void) {
 
 	if (stage.enemies_head.next == NULL) {
 
@@ -178,5 +179,5 @@ void create_enemie(void) {
 
 	stage.enemies_tail->x = ENEMIE_POS_X;
 	stage.enemies_tail->y = ENEMIE_POS_Y;
-
+	stage.enemies_tail->dx = ENEMIE_SPEED_dX;
 }

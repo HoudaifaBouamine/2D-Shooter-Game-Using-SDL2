@@ -27,7 +27,7 @@
 // Enemie Def
 #define ENEMIE_POS_X SCREEN_WIDTH
 #define ENEMIE_POS_Y rand() % (SCREEN_HEIGHT - 100);
-#define ENEMIE_SPEED_dX -6.0
+#define ENEMIE_SPEED_dX -(2 + rand() % 5)
 #define ENEMIE_SPEED_dY 0.0
 #define ENEMIE_HEALTH 200
 
