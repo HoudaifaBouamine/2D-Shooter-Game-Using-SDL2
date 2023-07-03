@@ -36,12 +36,16 @@ void game_loop() {
 
 		show_game_info();
 
-
+		if (player.health <= 0) {
+			break;
+		}
 
 		cap_fps(60);
 		//capFrameRate();
 	}
 
+
+	printf("\n\n\nGame Over\n\n\n");
 
 }
 
@@ -109,6 +113,7 @@ void show_game_info()
 	}
 
 	printf("Bullets counter : %d    \n", cpt);
+	printf("Player health   : %d    \n", player.health);
 
 
 	static int counter = 10;

@@ -1,0 +1,14 @@
+﻿  2D-SHOOTER.cpp
+C:\Users\admin\Desktop\git\2D-Shooter-Game-Using-SDL2\logic.h(217,34): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\admin\Desktop\git\2D-Shooter-Game-Using-SDL2\logic.h(246,26): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\admin\Desktop\git\2D-Shooter-Game-Using-SDL2\logic.h(247,27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\admin\Desktop\git\2D-Shooter-Game-Using-SDL2\init.h(136,14): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\admin\Desktop\git\2D-Shooter-Game-Using-SDL2\FPS.h(30,20): warning C4244: 'initializing': conversion from 'float' to 'time_t', possible loss of data
+C:\Users\admin\Desktop\git\2D-Shooter-Game-Using-SDL2\Game.h(122,10): warning C4244: 'initializing': conversion from 'time_t' to 'int', possible loss of data
+C:\Users\admin\Desktop\git\2D-Shooter-Game-Using-SDL2\Game.h(136,20): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
+C:\Users\admin\Desktop\git\2D-Shooter-Game-Using-SDL2\Game.h(143,12): warning C4244: 'argument': conversion from 'float' to 'Uint32', possible loss of data
+C:\Users\admin\Desktop\git\2D-Shooter-Game-Using-SDL2\Game.h(145,21): warning C4244: '=': conversion from 'Uint32' to 'float', possible loss of data
+C:\Users\admin\Desktop\git\2D-Shooter-Game-Using-SDL2\Game.h(157,12): warning C4244: '=': conversion from 'float' to 'long', possible loss of data
+C:\Users\admin\Desktop\git\2D-Shooter-Game-Using-SDL2\Game.h(172,20): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\admin\Desktop\git\2D-Shooter-Game-Using-SDL2\2D-SHOOTER.cpp(5,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  2D-SHOOTER.vcxproj -> C:\Users\admin\Desktop\git\2D-Shooter-Game-Using-SDL2\x64\Debug\2D-SHOOTER.exe

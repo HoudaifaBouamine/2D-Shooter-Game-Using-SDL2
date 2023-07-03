@@ -30,12 +30,15 @@ struct stEntity {
 	int health;
 	int reload;
 
+	int damage;
+
 	char side;//with the player or an enemy
 
 	SDL_Texture* texture;
 
 	stEntity* next;
-
+	stEntity* prev;
+	stEntity* bullets;
 };
 
 struct stStage {

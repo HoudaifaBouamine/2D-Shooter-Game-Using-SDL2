@@ -35,14 +35,23 @@ void game_draw() {
 	
 	for (stEntity* ptrBullet = stage.bullet_head.next; ptrBullet != NULL; ptrBullet = ptrBullet->next)
 	{
-		if (ptrBullet->health)
+		if (ptrBullet->health > 0)
 			draw(*ptrBullet);
 	}
 
 	for (stEntity* ptrEnemie = stage.enemies_head.next; ptrEnemie != NULL; ptrEnemie = ptrEnemie->next)
 	{
-		if (ptrEnemie->health)
+		if (ptrEnemie->health > 0) {
 			draw(*ptrEnemie);
+
+			for (stEntity* ptrBullet = ptrEnemie->bullets; ptrBullet != NULL; ptrBullet = ptrBullet->next) {
+
+				if(ptrBullet->health > 0)
+					draw(*ptrBullet);
+
+			}
+
+		}
 	}
 }
 
